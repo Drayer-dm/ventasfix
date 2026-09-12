@@ -30,18 +30,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims():array //claims para el payload del token
     {
-        return [
-            'guards' => [
-                'web' => [
-                    'driver' => 'session',
-                    'provider' => 'users',
-                ],
-
-                'api' => [
-                    'driver' => 'jwt',
-                    'provider' => 'users',
-                ],
-            ],
-        ];
+        return [];
     }
 }
