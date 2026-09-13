@@ -13,7 +13,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        ]);
+
+        // Elige el idioma (es / en) en cada petición. En web va al FINAL
+        // (append) porque necesita la sesión ya iniciada; en api va PRIMERO
+        // (prepend) porque no hay sesión y conviene fijarlo antes que nada.
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
+
+        $middleware->api(prepend: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

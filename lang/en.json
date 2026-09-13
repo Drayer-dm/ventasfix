@@ -1,0 +1,36 @@
+{
+    "Inicio de sesión exitoso.": "Login successful.",
+    "Credenciales inválidas.": "Invalid credentials.",
+    "Usuario autenticado.": "Authenticated user.",
+    "Sesión cerrada exitosamente.": "Logged out successfully.",
+    "El token expiró.": "Token has expired.",
+    "El token es inválido.": "Token is invalid.",
+    "Token ausente.": "Token not provided.",
+    "Error al procesar el token.": "Could not process the token.",
+    "El usuario del token ya no existe.": "The token's user no longer exists.",
+    "Los datos enviados no son válidos.": "The submitted data is not valid.",
+
+    "Listado de usuarios obtenido correctamente.": "User list retrieved successfully.",
+    "Usuario encontrado.": "User found.",
+    "Usuario creado correctamente.": "User created successfully.",
+    "Usuario actualizado correctamente.": "User updated successfully.",
+    "Usuario eliminado correctamente.": "User deleted successfully.",
+    "No existe un usuario con el id :id.": "There is no user with id :id.",
+
+    "Listado de productos obtenido correctamente.": "Product list retrieved successfully.",
+    "Producto encontrado.": "Product found.",
+    "Producto creado correctamente.": "Product created successfully.",
+    "Producto actualizado correctamente.": "Product updated successfully.",
+    "Producto eliminado correctamente.": "Product deleted successfully.",
+    "No existe un producto con el id :id.": "There is no product with id :id.",
+
+    "Listado de clientes obtenido correctamente.": "Client list retrieved successfully.",
+    "Cliente encontrado.": "Client found.",
+    "Cliente creado correctamente.": "Client created successfully.",
+    "Cliente actualizado correctamente.": "Client updated successfully.",
+    "Cliente eliminado correctamente.": "Client deleted successfully.",
+    "No existe un cliente con el id :id.": "There is no client with id :id.",
+
+    "Resumen del dashboard obtenido correctamente.": "Dashboard summary retrieved successfully.",
+    "La ruta solicitada no existe en esta API.": "The requested route does not exist in this API."
+}
