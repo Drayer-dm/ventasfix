@@ -32,5 +32,6 @@
     "No existe un cliente con el id :id.": "There is no client with id :id.",
 
     "Resumen del dashboard obtenido correctamente.": "Dashboard summary retrieved successfully.",
-    "La ruta solicitada no existe en esta API.": "The requested route does not exist in this API."
+    "La ruta solicitada no existe en esta API.": "The requested route does not exist in this API.",
+    "Método no permitido para esta ruta.": "Method not allowed for this route."
 }

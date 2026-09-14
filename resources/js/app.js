@@ -39,13 +39,14 @@ document.querySelectorAll('[data-sidebar-open]').forEach((b) => b.addEventListen
 document.querySelectorAll('[data-sidebar-close]').forEach((b) => b.addEventListener('click', () => toggleDrawer(false)));
 backdrop?.addEventListener('click', () => toggleDrawer(false));
 
-// desktop: colapsar a solo iconos. el estado vive en <html data-sidebar="collapsed">
+// desktop: colapsar a solo iconos. el estado vive en <html data-nav="collapsed">
+// (se llama data-nav y no data-sidebar pa no chocar con el aside [data-sidebar])
 // y la variante "collapsed:" de tailwind hace el resto (anchos, esconder textos)
 document.querySelectorAll('[data-sidebar-collapse]').forEach((button) => {
     button.addEventListener('click', () => {
-        const collapsed = root.dataset.sidebar !== 'collapsed';
-        if (collapsed) root.dataset.sidebar = 'collapsed';
-        else delete root.dataset.sidebar;
+        const collapsed = root.dataset.nav !== 'collapsed';
+        if (collapsed) root.dataset.nav = 'collapsed';
+        else delete root.dataset.nav;
         localStorage.setItem('sidebar', collapsed ? 'collapsed' : 'expanded');
     });
 });

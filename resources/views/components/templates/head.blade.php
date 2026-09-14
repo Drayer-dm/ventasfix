@@ -14,7 +14,7 @@
         var theme = localStorage.getItem('theme');
         var dark = theme ? theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (dark) document.documentElement.classList.add('dark');
-        if (localStorage.getItem('sidebar') === 'collapsed') document.documentElement.dataset.sidebar = 'collapsed';
+        if (localStorage.getItem('sidebar') === 'collapsed') document.documentElement.dataset.nav = 'collapsed';
     })();
 </script>
 

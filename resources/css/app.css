@@ -5,10 +5,18 @@
 
 /*
   modo oscuro por clase (.dark en <html>), lo pone el toggle y el script del <head>.
-  sidebar colapsado igual: data-sidebar="collapsed" en <html> → variante "collapsed:"
+  sidebar colapsado igual: data-nav="collapsed" en <html> → variante "collapsed:"
 */
 @custom-variant dark (&:where(.dark, .dark *));
-@custom-variant collapsed (&:where([data-sidebar='collapsed'], [data-sidebar='collapsed'] *));
+
+/* colapsado SOLO en desktop (md+): en celular el sidebar es un cajon y siempre va completo */
+@custom-variant collapsed {
+    @media (width >= 48rem) {
+        &:where([data-nav='collapsed'], [data-nav='collapsed'] *) {
+            @slot;
+        }
+    }
+}
 
 /*
   NEUMORFISMO: todo es la MISMA superficie (--bg). lo q "sube" lleva sombra doble
