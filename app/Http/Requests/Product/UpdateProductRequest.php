@@ -9,6 +9,16 @@ use Illuminate\Validation\Rule;
 //'sometimes' = si no viene no se valida, si viene no puede ir vacio
 class UpdateProductRequest extends ApiFormRequest
 {
+    //en el form web de editar, si no eligen imagen nueva php igual manda "image" vacio.
+    //lo saco antes de validar pa q 'sometimes' no lo vea y se quede la imagen q tenia
+    protected function prepareForValidation(): void
+    {
+        if (! $this->hasFile('image') && blank($this->input('image'))) {
+            $this->request->remove('image');
+            $this->files->remove('image');
+        }
+    }
+
     public function rules(): array
     {
         $productId = $this->route('id');
@@ -21,7 +31,10 @@ class UpdateProductRequest extends ApiFormRequest
             'short_description' => ['sometimes', 'required', 'string', 'max:255'],
             'long_description'  => ['sometimes', 'required', 'string'],
 
-            'image' => ['sometimes', 'required', 'string', 'max:255'],
+            //archivo si viene desde la web, string si es la api. si no viene, se queda la q tenia
+            'image' => $this->hasFile('image')
+                ? ['sometimes', 'required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048']
+                : ['sometimes', 'required', 'string', 'max:255'],
 
             //si cambia el neto, el modelo recalcula solo el sale_price al guardar
             'net_price' => ['sometimes', 'required', 'integer', 'min:1', 'max:4294967295'],

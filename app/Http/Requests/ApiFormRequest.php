@@ -25,11 +25,18 @@ abstract class ApiFormRequest extends FormRequest
     }
 
      // Laravel llama a este método cuando rules() no se cumple.
+     // los mismos requests los usa la web (Blade) y la API, entonces:
+     //  - si la peticion es /api/* → 422 en json con nuestro envelope
+     //  - si es web → lo normal de laravel: redirect atras con $errors y old() (parent)
 
     protected function failedValidation(Validator $validator): void
     {
-        throw new HttpResponseException(
-            $this->errorResponse('Los datos enviados no son válidos.', 422, $validator->errors()->toArray())
-        );
+        if ($this->is('api/*') || $this->expectsJson()) {
+            throw new HttpResponseException(
+                $this->errorResponse('Los datos enviados no son válidos.', 422, $validator->errors()->toArray())
+            );
+        }
+
+        parent::failedValidation($validator);
     }
 }

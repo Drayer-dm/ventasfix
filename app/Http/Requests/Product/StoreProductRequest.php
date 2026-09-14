@@ -19,9 +19,11 @@ class StoreProductRequest extends ApiFormRequest
             'short_description' => ['required', 'string', 'max:255'],
             'long_description'  => ['required', 'string'],
 
-            //por ahora la imagen es una ruta o url en texto. cuando hagamos el front
-            //con subida de archivo se cambia a 'image|mimes:jpg,png'
-            'image' => ['required', 'string', 'max:255'],
+            //la imagen depende de por donde entra: desde la web viene un archivo (hasFile),
+            //desde la api viene un string con la ruta/url. una sola imagen por producto
+            'image' => $this->hasFile('image')
+                ? ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048']
+                : ['required', 'string', 'max:255'],
 
             //unsignedInteger → entero, sin negativos, tope de un INT sin signo.
             //sin el max la bd lo trunca en silencio. min 1 pq un producto a $0 no tiene sentido

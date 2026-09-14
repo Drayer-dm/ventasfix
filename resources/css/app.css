@@ -3,7 +3,156 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/*
+  modo oscuro por clase (.dark en <html>), lo pone el toggle y el script del <head>.
+  sidebar colapsado igual: data-sidebar="collapsed" en <html> → variante "collapsed:"
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant collapsed (&:where([data-sidebar='collapsed'], [data-sidebar='collapsed'] *));
+
+/*
+  NEUMORFISMO: todo es la MISMA superficie (--bg). lo q "sube" lleva sombra doble
+  (oscura abajo-derecha, clara arriba-izquierda) y lo q "se hunde" (inputs, item activo)
+  lleva las mismas sombras pero inset. no hay bordes ni fondos distintos: solo luz y sombra.
+  paleta: escala neutral del logo, cero color
+*/
+:root {
+    color-scheme: light;
+
+    --bg: oklch(92.5% 0.003 260);      /* superficie unica, un gris muy levemente frio */
+    --fg: oklch(20% 0 0);              /* texto principal */
+    --muted: oklch(50% 0 0);           /* texto secundario */
+    --line: oklch(86% 0 0);            /* divisores finos (filas de tabla) */
+
+    --primary: oklch(20% 0 0);         /* boton principal = negro del logo */
+    --primary-fg: oklch(97% 0 0);
+    --primary-hover: oklch(30% 0 0);
+
+    --shadow-dark: oklch(0% 0 0 / 0.16);      /* sombra abajo-derecha */
+    --shadow-light: oklch(100% 0 0 / 0.95);   /* luz arriba-izquierda */
+
+    --badge-low: oklch(88% 0 0);       /* stock: los 3 grises del logo */
+    --badge-mid: oklch(76% 0 0);
+    --badge-high: oklch(22% 0 0);
+    --badge-high-fg: oklch(97% 0 0);
+}
+
+.dark {
+    color-scheme: dark;
+
+    --bg: oklch(22% 0.003 260);
+    --fg: oklch(93% 0 0);
+    --muted: oklch(64% 0 0);
+    --line: oklch(29% 0 0);
+
+    --primary: oklch(95% 0 0);         /* en oscuro el boton principal es blanco */
+    --primary-fg: oklch(18% 0 0);
+    --primary-hover: oklch(85% 0 0);
+
+    --shadow-dark: oklch(0% 0 0 / 0.55);
+    --shadow-light: oklch(100% 0 0 / 0.06);
+
+    --badge-low: oklch(28% 0 0);
+    --badge-mid: oklch(40% 0 0);
+    --badge-high: oklch(92% 0 0);
+    --badge-high-fg: oklch(15% 0 0);
+}
+
+/* registro de las variables como colores de tailwind → bg-bg, text-fg, text-muted, border-line, bg-primary... */
+@theme inline {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --color-bg: var(--bg);
+    --color-fg: var(--fg);
+    --color-muted: var(--muted);
+    --color-line: var(--line);
+
+    --color-primary: var(--primary);
+    --color-primary-fg: var(--primary-fg);
+    --color-primary-hover: var(--primary-hover);
+
+    --color-badge-low: var(--badge-low);
+    --color-badge-mid: var(--badge-mid);
+    --color-badge-high: var(--badge-high);
+    --color-badge-high-fg: var(--badge-high-fg);
+}
+
+/* ── piezas neumorficas ──────────────────────────────────────────────── */
+
+/* relieve grande: cards, tablas, formularios */
+@utility neu {
+    background-color: var(--bg);
+    box-shadow:
+        10px 10px 22px var(--shadow-dark),
+        -10px -10px 22px var(--shadow-light);
+}
+
+/* relieve chico: botones, avatar, iconos, items al hover */
+@utility neu-sm {
+    background-color: var(--bg);
+    box-shadow:
+        5px 5px 10px var(--shadow-dark),
+        -5px -5px 10px var(--shadow-light);
+}
+
+/* hundido: inputs, item activo del menu, badges */
+@utility neu-inset {
+    background-color: var(--bg);
+    box-shadow:
+        inset 5px 5px 10px var(--shadow-dark),
+        inset -5px -5px 10px var(--shadow-light);
+}
+
+@utility neu-inset-sm {
+    background-color: var(--bg);
+    box-shadow:
+        inset 3px 3px 6px var(--shadow-dark),
+        inset -3px -3px 6px var(--shadow-light);
+}
+
+/* el sidebar no es un panel aparte: es la misma superficie con una sombra hacia la derecha */
+@utility neu-edge-right {
+    background-color: var(--bg);
+    box-shadow: 8px 0 24px var(--shadow-dark);
+}
+
+/* boton relleno (primario) con sombra neumorfica */
+@utility neu-primary {
+    background-color: var(--primary);
+    color: var(--primary-fg);
+    box-shadow:
+        5px 5px 10px var(--shadow-dark),
+        -3px -3px 8px var(--shadow-light);
+}
+
+@layer base {
+    html {
+        @apply antialiased;
+    }
+
+    body {
+        @apply bg-bg text-fg font-sans;
+        transition: background-color 200ms ease, color 200ms ease;
+    }
+
+    input, select, textarea, button {
+        font: inherit;
+    }
+
+    /* campo invalido segun la validacion del front (app.js) o del back (@error) */
+    .is-invalid {
+        outline: 1.5px solid var(--fg);
+        outline-offset: -1.5px;
+    }
+
+    /* que los number no muestren las flechitas, se ven mal sobre el hundido */
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type='number'] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
 }

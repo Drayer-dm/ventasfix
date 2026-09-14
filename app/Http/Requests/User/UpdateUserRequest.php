@@ -10,6 +10,16 @@ use Illuminate\Validation\Rule;
 //(sirve pa PATCH parcial), pero si viene NO puede venir vacio (required)
 class UpdateUserRequest extends ApiFormRequest
 {
+    //en el form web de editar el campo password viene siempre (vacio si no la cambian).
+    //si viene vacio lo saco del request ANTES de validar: asi 'sometimes' no lo ve,
+    //no falla el required y la clave actual se queda como esta
+    protected function prepareForValidation(): void
+    {
+        if (blank($this->input('password'))) {
+            $this->request->remove('password');
+        }
+    }
+
     public function rules(): array
     {
         //el id viene de la ruta {id}. lo necesito pa q unique ignore al mismo usuario,
